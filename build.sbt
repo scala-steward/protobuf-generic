@@ -56,9 +56,9 @@ val commonSettings = Seq(
   }
 )
 
-val protoSettings = PB.protobufSettings ++ Seq(
-  version in PB.protobufConfig := protobufVersion,
-  PB.runProtoc in PB.protobufConfig := (args =>
+val protoSettings = Seq(
+  version in ProtobufConfig := protobufVersion,
+  protobufRunProtoc in ProtobufConfig := (args =>
     com.github.os72.protocjar.Protoc.runProtoc(protocVersion  +: args.toArray)
   )
 )
@@ -92,7 +92,7 @@ lazy val core: Project = Project(
 lazy val proto2Test: Project = Project(
   "proto2test",
   file("proto2test")
-).settings(
+).enablePlugins(ProtobufPlugin).settings(
   commonSettings ++ protoSettings ++ noPublishSettings
 ).dependsOn(
   core
@@ -100,7 +100,7 @@ lazy val proto2Test: Project = Project(
 lazy val proto3Test: Project = Project(
   "proto3test",
   file("proto3test")
-).settings(
+).enablePlugins(ProtobufPlugin).settings(
   commonSettings ++ protoSettings ++ noPublishSettings,
   if (isProto3) proto3Settings else noProto3Settings
 ).dependsOn(
