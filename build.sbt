@@ -19,9 +19,8 @@ val commonSettings = Seq(
     "org.scalatest" %% "scalatest" % scalaTestVersion % Test
   ),
   // Release settings
-  publishTo := Some(
-    if (isSnapshot.value) Opts.resolver.sonatypeOssSnapshots.head else Opts.resolver.sonatypeStaging
-  ),
+  publishTo := (if (isSnapshot.value) Some(Resolver.sonatypeCentralSnapshots)
+                else localStaging.value),
   releaseCrossBuild := true,
   releasePublishArtifactsAction := PgpKeys.publishSigned.value,
   publishMavenStyle := true,
